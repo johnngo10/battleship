@@ -1,0 +1,79 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header */
+.header {
+  border: 1px solid black;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.header h1 {
+  font-size: 40px;
+}
+
+/* gameboard */
+.gameboard {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.enemy-grid-container,
+.friendly-grid-container {
+  text-align: center;
+}
+
+.enemy-grid-container h2,
+.friendly-grid-container h2 {
+  margin-bottom: 20px;
+}
+
+.enemy-grid,
+.friendly-grid {
+  border: 1px solid black;
+  display: grid;
+  grid-template-columns: repeat(10, 2fr);
+  grid-template-rows: repeat(10, 2fr);
+  width: 400px;
+  height: 400px;
+}
+
+.enemy-cell,
+.friendly-cell {
+  border: 1px solid black;
+}
+
+.enemy-cell:hover,
+.friendly-cell:hover {
+  background-color: lightskyblue;
+}
+
+.ship {
+  background-color: lightskyblue;
+}
+
+.controller-container {
+  border: 1px solid black;
+}
+
+.controller-container h3 {
+  text-align: center;
+}
+
+.select-ships {
+  padding: 10px 20px;
+  background-color: #0a75ad;
+  color: white;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.select-ships:hover {
+  opacity: 0.8;
+}
