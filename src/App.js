@@ -8,6 +8,8 @@ const App = () => {
   const [enemyShips, setEnemyShips] = useState([]);
   const [friendlyShips, setFriendlyShips] = useState([]);
   const [selected, setSelected] = useState('');
+  const [direction, setDirection] = useState('Horizontal');
+  const [disableOption, setDisableOption] = useState([]);
 
   const Ship = (length, num) => {
     // example object {length: [0,1], hit: 1, sunk: true}
@@ -77,6 +79,27 @@ const App = () => {
     setSelected(target);
   };
 
+  const resetSelect = () => {
+    setSelected('');
+  };
+
+  const handleDirection = e => {
+    const target = e.target.textContent;
+    if (direction === 'Horizontal') {
+      setDirection('Vertical');
+    } else if (direction === 'Vertical') {
+      setDirection('Horizontal');
+    }
+  };
+
+  const removeShipOption = num => {
+    let arr = disableOption.concat(num);
+    // setDisableOption(...disableOption, num);
+    setDisableOption(arr);
+    console.log(disableOption);
+    console.log();
+  };
+
   const Gameboard = () => {};
 
   // I need to figure this out
@@ -88,25 +111,61 @@ const App = () => {
         <div className='controller-container'>
           <h3>Ships</h3>
           <div>
-            <div className='select-ships' data-num='0' onClick={handleSelect}>
+            <div
+              className={`select-ships ${
+                disableOption.indexOf('4') > -1 ? 'disable' : 'undefined'
+              }`}
+              data-num='4'
+              onClick={handleSelect}
+            >
               Carrier
             </div>
-            <div className='select-ships' data-num='1' onClick={handleSelect}>
+            <div
+              className={`select-ships ${
+                disableOption.indexOf('3') > -1 ? 'disable' : 'undefined'
+              }`}
+              data-num='3'
+              onClick={handleSelect}
+            >
               Battleship
             </div>
-            <div className='select-ships' data-num='2' onClick={handleSelect}>
+            <div
+              className={`select-ships ${
+                disableOption.indexOf('2') > -1 ? 'disable' : 'undefined'
+              }`}
+              data-num='2'
+              onClick={handleSelect}
+            >
               Cruiser
             </div>
-            <div className='select-ships' data-num='3' onClick={handleSelect}>
+            <div
+              className={`select-ships ${
+                disableOption.indexOf('1') > -1 ? 'disable' : 'undefined'
+              }`}
+              data-num='1'
+              onClick={handleSelect}
+            >
               Submarine
             </div>
-            <div className='select-ships' data-num='4' onClick={handleSelect}>
+            <div
+              className={`select-ships ${
+                disableOption.indexOf('0') > -1 ? 'disable' : 'undefined'
+              }`}
+              data-num='0'
+              onClick={handleSelect}
+            >
               Destroyer
             </div>
           </div>
+          <button onClick={handleDirection}>{direction}</button>
           <p>Restart</p>
         </div>
-        <FriendlyGrid selected={selected} />
+        <FriendlyGrid
+          selected={selected}
+          direction={direction}
+          removeShipOption={removeShipOption}
+          resetSelect={resetSelect}
+        />
         <EnemyGrid enemyFire={enemyFire} enemyShips={enemyShips} />
       </div>
       <div>
