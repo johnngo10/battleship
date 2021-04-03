@@ -6,7 +6,6 @@ import Header from './components/Header';
 
 const App = () => {
   const [enemyShips, setEnemyShips] = useState([]);
-  const [friendlyShips, setFriendlyShips] = useState([]);
   const [selected, setSelected] = useState('');
   const [direction, setDirection] = useState('Horizontal');
   const [disableOption, setDisableOption] = useState([]);
@@ -219,17 +218,21 @@ const App = () => {
 
   const generateEnemyShips = () => {
     // Generate random number
-    // const randNum = max => {
-    //   return Math.floor(Math.random() * Math.floor(max));
-    // };
-    // something wrong with edgeArr
-    const randNum = (max, edgeArr) => {
-      const num = Math.floor(Math.random() * Math.floor(max));
-      console.log(edgeArr);
-      return horEdge.indexOf(num) > 0
-        ? Math.floor(Math.random() * Math.floor(max))
-        : num;
+    const randNum = max => {
+      return Math.floor(Math.random() * Math.floor(max));
     };
+    // Generate random number within the edges
+    const randEdgeNum = (max, edgeArr) => {
+      let num = Math.floor(Math.random() * Math.floor(max));
+      while (edgeArr.indexOf(num) > 0) {
+        num = Math.floor(Math.random() * Math.floor(max));
+      }
+      return num;
+      // return edgeArr.indexOf(num) > 0
+      //   ? Math.floor(Math.random() * Math.floor(max))
+      //   : num;
+    };
+
     // Generate random direction
     const randomDir = () => {
       const direction = ['horizontal', 'vertical'];
@@ -241,15 +244,49 @@ const App = () => {
       if (direction === 'horizontal') {
         let ships = [];
         if (shipNum === 0) {
-          ships.push(randNum(90, horEdge));
+          let num = randEdgeNum(100, horEdge);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0
+          ) {
+            num = randEdgeNum(100, horEdge);
+          }
+          ships.push(num);
         } else if (shipNum === 1) {
-          ships.push(randNum(90, horEdge2));
+          let num = randEdgeNum(100, horEdge2);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0 ||
+            enemyShips.indexOf(num + 2) > 0
+          ) {
+            num = randEdgeNum(100, horEdge2);
+          }
+          ships.push(num);
         } else if (shipNum === 2) {
-          ships.push(randNum(90, horEdge3));
+          let num = randEdgeNum(100, horEdge3);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0 ||
+            enemyShips.indexOf(num + 2) > 0 ||
+            enemyShips.indexOf(num + 3) > 0
+          ) {
+            num = randEdgeNum(100, horEdge3);
+          }
+          ships.push(num);
         } else if (shipNum === 3) {
-          ships.push(randNum(90, horEdge4));
+          let num = randEdgeNum(100, horEdge4);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0 ||
+            enemyShips.indexOf(num + 2) > 0 ||
+            enemyShips.indexOf(num + 3) > 0 ||
+            enemyShips.indexOf(num + 4) > 0
+          ) {
+            num = randEdgeNum(100, horEdge4);
+          }
+          ships.push(num);
         }
-        // ships.push(randNum(90));
+        // ships.push(randEdgeNum(90));
         for (let i = 0; i <= shipNum; i++) {
           ships.push(ships[ships.length - 1] + 1);
         }
@@ -257,13 +294,47 @@ const App = () => {
       } else if (direction === 'vertical') {
         let ships = [];
         if (shipNum === 0) {
-          ships.push(randNum(90, vertEdge));
+          let num = randEdgeNum(100, vertEdge);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0
+          ) {
+            num = randEdgeNum(100, vertEdge);
+          }
+          ships.push(num);
         } else if (shipNum === 1) {
-          ships.push(randNum(90, vertEdge2));
+          let num = randEdgeNum(100, vertEdge2);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0 ||
+            enemyShips.indexOf(num + 2) > 0
+          ) {
+            num = randEdgeNum(100, vertEdge2);
+          }
+          ships.push(num);
         } else if (shipNum === 2) {
-          ships.push(randNum(90, vertEdge3));
+          let num = randEdgeNum(100, vertEdge3);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0 ||
+            enemyShips.indexOf(num + 2) > 0 ||
+            enemyShips.indexOf(num + 3) > 0
+          ) {
+            num = randEdgeNum(100, vertEdge3);
+          }
+          ships.push(num);
         } else if (shipNum === 3) {
-          ships.push(randNum(90, vertEdge4));
+          let num = randEdgeNum(100, vertEdge4);
+          while (
+            enemyShips.indexOf(num) > 0 ||
+            enemyShips.indexOf(num + 1) > 0 ||
+            enemyShips.indexOf(num + 2) > 0 ||
+            enemyShips.indexOf(num + 3) > 0 ||
+            enemyShips.indexOf(num + 4) > 0
+          ) {
+            num = randEdgeNum(100, vertEdge4);
+          }
+          ships.push(num);
         }
         for (let i = 0; i <= shipNum; i++) {
           ships.push(ships[ships.length - 1] + 10);
@@ -288,6 +359,7 @@ const App = () => {
     };
 
     setEnemyShips(shipsArr());
+    console.log(enemyShips);
   };
 
   const handleSelect = e => {
@@ -312,15 +384,12 @@ const App = () => {
     let arr = disableOption.concat(num);
     // setDisableOption(...disableOption, num);
     setDisableOption(arr);
-    console.log(disableOption);
-    console.log();
   };
 
   const start = () => {
     setStartGame(true);
     generateEnemyShips();
   };
-
   const Gameboard = () => {};
 
   // Enemy ships cant overlap or go over edge
