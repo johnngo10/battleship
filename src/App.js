@@ -10,6 +10,10 @@ const App = () => {
   const [direction, setDirection] = useState('Horizontal');
   const [disableOption, setDisableOption] = useState([]);
   const [startGame, setStartGame] = useState(false);
+  const [hit, setHit] = useState([]);
+  const [playerHit, setPlayerHit] = [];
+  const [miss, setMiss] = useState([]);
+  const [turn, setTurn] = useState('player');
   const horEdge = [9, 19, 29, 39, 49, 59, 69, 79, 89, 99];
   const horEdge2 = [
     9,
@@ -212,8 +216,28 @@ const App = () => {
     return { length, hit, isSunk };
   };
 
-  const enemyFire = e => {
-    console.log(e.target);
+  const enemyFire = () => {
+    const randNum = Math.floor(Math.random() * Math.floor(100));
+    if (turn === 'enemy' && playerHit.indexOf(randNum) < 0) {
+      setPlayerHit(playerHit.concat(randNum));
+      setTurn('player');
+    }
+  };
+
+  const playerFire = e => {
+    const target = e.target.getAttribute('position');
+    const cell = e.target.className;
+    if (startGame === true && turn === 'player') {
+      if (cell.indexOf('ship') > 0 && hit.indexOf(target) < 0) {
+        setHit(hit.concat(target));
+        setTurn('enemy');
+      } else {
+        setMiss(miss.concat(target));
+        setTurn('enemy');
+      }
+    }
+
+    // console.log(cell);
   };
 
   const generateEnemyShips = () => {
@@ -372,7 +396,6 @@ const App = () => {
   };
 
   const handleDirection = e => {
-    const target = e.target.textContent;
     if (direction === 'Horizontal') {
       setDirection('Vertical');
     } else if (direction === 'Vertical') {
@@ -390,6 +413,7 @@ const App = () => {
     setStartGame(true);
     generateEnemyShips();
   };
+
   const Gameboard = () => {};
 
   // Enemy ships cant overlap or go over edge
@@ -403,7 +427,7 @@ const App = () => {
             <React.Fragment>
               <h3>Stats</h3>
               <div>
-                <p>0 successful hits</p>
+                <p>{hit.length} successful hits</p>
               </div>
             </React.Fragment>
           ) : disableOption.length > 4 ? (
@@ -470,7 +494,12 @@ const App = () => {
           removeShipOption={removeShipOption}
           resetSelect={resetSelect}
         />
-        <EnemyGrid enemyFire={enemyFire} enemyShips={enemyShips} />
+        <EnemyGrid
+          playerFire={playerFire}
+          enemyShips={enemyShips}
+          hit={hit}
+          miss={miss}
+        />
       </div>
     </div>
   );

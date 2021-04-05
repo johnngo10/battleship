@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const EnemyGrid = props => {
   const [cells, setCells] = useState([]);
-  const { enemyFire, enemyShips } = props;
+  const { playerFire, enemyShips, hit, miss } = props;
 
   useEffect(() => {
     let arr = [];
@@ -21,6 +21,23 @@ const EnemyGrid = props => {
     }
   };
 
+  const handleHit = num => {
+    for (let i = 0; i < hit.length; i++) {
+      if (parseInt(hit[i]) === num) {
+        return 'hit';
+      }
+    }
+    // console.log(num);
+  };
+
+  const handleMiss = num => {
+    for (let i = 0; i < miss.length; i++) {
+      if (parseInt(miss[i]) === num) {
+        return 'miss';
+      }
+    }
+  };
+
   return (
     <div className='enemy-grid-container'>
       <h2>Enemy</h2>
@@ -28,8 +45,10 @@ const EnemyGrid = props => {
         {cells.map((value, index) => {
           return (
             <div
-              className={`enemy-cell ${setShip(value[0])}`}
-              onClick={enemyFire}
+              className={`enemy-cell ${setShip(value[0])} ${handleHit(
+                value[0]
+              )} ${handleMiss(value[0])}`}
+              onClick={playerFire}
               key={index}
               position={value[0]}
             ></div>

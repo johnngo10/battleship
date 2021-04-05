@@ -58,6 +58,14 @@
   background-color: lightskyblue;
 }
 
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: grey;
+}
+
 .controller-container {
   border: 1px solid black;
 }
