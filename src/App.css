@@ -49,10 +49,10 @@
   border: 1px solid black;
 }
 
-.enemy-cell:hover,
+/* .enemy-cell:hover,
 .friendly-cell:hover {
   background-color: lightskyblue;
-}
+} */
 
 .ship {
   background-color: lightskyblue;

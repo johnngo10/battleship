@@ -3,7 +3,15 @@ import { useState, useEffect } from 'react';
 const FriendlyGrid = props => {
   const [cells, setCells] = useState([]);
   const [friendlyShips, setFriendlyShips] = useState([]);
-  const { selected, direction, removeShipOption, resetSelect } = props;
+  const {
+    selected,
+    direction,
+    removeShipOption,
+    resetSelect,
+    playerHit,
+    passFriendShip,
+    playerMiss,
+  } = props;
 
   useEffect(() => {
     let arr = [];
@@ -12,6 +20,11 @@ const FriendlyGrid = props => {
       setCells(arr);
       arr.push([i]);
     }
+  }, []);
+
+  // something wrong here
+  useEffect(() => {
+    passFriendShip(friendlyShips);
   }, []);
 
   const generateShip = (position, shipNum) => {
@@ -321,6 +334,7 @@ const FriendlyGrid = props => {
     // console.log(position);
     // console.log(friendlyShips);
     setFriendlyShips(arr.concat(friendlyShips));
+    passFriendShip(arr.concat(friendlyShips));
   };
 
   const setShip = num => {
@@ -331,6 +345,24 @@ const FriendlyGrid = props => {
     }
   };
 
+  const handleHit = num => {
+    for (let i = 0; i < playerHit.length; i++) {
+      if (parseInt(playerHit[i]) === num && friendlyShips.indexOf(num) > -1) {
+        return 'hit';
+      }
+    }
+  };
+
+  const handleMiss = num => {
+    for (let i = 0; i < playerMiss.length; i++) {
+      if (parseInt(playerMiss[i]) === num && playerMiss.indexOf(num) > -1) {
+        return 'miss';
+      }
+    }
+  };
+
+  // console.log(playerHit);
+
   return (
     <div className='friendly-grid-container'>
       <h2>You</h2>
@@ -338,7 +370,9 @@ const FriendlyGrid = props => {
         {cells.map((value, index) => {
           return (
             <div
-              className={`friendly-cell ${setShip(value[0])}`}
+              className={`friendly-cell ${setShip(value[0])} ${handleHit(
+                value[0]
+              )} ${handleMiss(value[0])}`}
               key={index}
               onClick={handlePlacedShip}
               position={value[0]}
