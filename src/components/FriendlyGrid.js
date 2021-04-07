@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 
 const FriendlyGrid = props => {
   const [cells, setCells] = useState([]);
-  const [friendlyShips, setFriendlyShips] = useState([]);
   const {
     selected,
     direction,
     removeShipOption,
     resetSelect,
     playerHit,
+    friendlyShips,
     passFriendShip,
     playerMiss,
   } = props;
@@ -20,11 +20,6 @@ const FriendlyGrid = props => {
       setCells(arr);
       arr.push([i]);
     }
-  }, []);
-
-  // something wrong here
-  useEffect(() => {
-    passFriendShip(friendlyShips);
   }, []);
 
   const generateShip = (position, shipNum) => {
@@ -331,9 +326,7 @@ const FriendlyGrid = props => {
         resetSelect();
       }
     }
-    // console.log(position);
-    // console.log(friendlyShips);
-    setFriendlyShips(arr.concat(friendlyShips));
+
     passFriendShip(arr.concat(friendlyShips));
   };
 
@@ -360,8 +353,6 @@ const FriendlyGrid = props => {
       }
     }
   };
-
-  // console.log(playerHit);
 
   return (
     <div className='friendly-grid-container'>

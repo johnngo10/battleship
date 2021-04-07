@@ -361,12 +361,8 @@ const App = () => {
       } else if (friendlyShips.indexOf(randNum) < 0) {
         setPlayerMiss(playerMiss.concat(randNum));
         setTurn('player');
-        checkLose();
       }
     }
-    console.log(playerHit);
-    console.log(playerMiss);
-    console.log(randNum);
   };
 
   const playerFire = e => {
@@ -386,7 +382,6 @@ const App = () => {
         setMiss(miss.concat(target));
         setTurn('enemy');
         enemyFire();
-        checkWin();
       }
     }
   };
@@ -588,20 +583,33 @@ const App = () => {
   };
 
   const checkWin = () => {
-    if (hit.length === enemyShips.length) {
+    if (hit.length + 1 === enemyShips.length) {
       console.log('You win');
       setStartGame(false);
       setWin(true);
     }
   };
 
-  const checkLose = arr => {
+  const checkLose = () => {
     // Gotta check to see if its a valid ship
-    if (playerHit.length === 17) {
+    if (playerHit.length + 1 === 17) {
       console.log('You Lose');
       setStartGame(false);
       setLose(true);
     }
+  };
+
+  const resetGame = () => {
+    setStartGame(false);
+    setWin(false);
+    setLose(false);
+    setHit([]);
+    setPlayerHit([]);
+    setMiss([]);
+    setPlayerMiss([]);
+    setDisableOption([]);
+    setEnemyShips([]);
+    setFriendlyShips([]);
   };
 
   const Gameboard = () => {};
@@ -614,68 +622,80 @@ const App = () => {
       <div className='gameboard'>
         <div className='controller-container'>
           {startGame === true ? (
-            <React.Fragment>
-              <h3>Stats</h3>
-              <div>
-                <p>{hit.length} successful hits</p>
-              </div>
-            </React.Fragment>
-          ) : disableOption.length > 4 ? (
-            <button onClick={start}>Start Game</button>
+            <div className='stats-container'>
+              <h3 className='stats'>STATS</h3>
+              <p className='hit-stat'>{hit.length} successful hits</p>
+              <p>First to sink all 5 ships win!</p>
+              <p className='restart-link' onClick={resetGame}>
+                Restart
+              </p>
+            </div>
+          ) : disableOption.length > 4 && win === false && lose === false ? (
+            <button className='start-button' onClick={start}>
+              Start Game
+            </button>
+          ) : win === true || lose === true ? (
+            <div>
+              <h3>{win === true ? 'You win!' : 'Better luck next time!'}</h3>
+              <button className='play-again-button' onClick={resetGame}>
+                Play again?
+              </button>
+            </div>
           ) : (
-            <React.Fragment>
-              {' '}
-              <div>
-                <h3>Ships</h3>
-                <div
-                  className={`select-ships ${
-                    disableOption.indexOf('4') > -1 ? 'disable' : 'undefined'
-                  }`}
-                  data-num='4'
-                  onClick={handleSelect}
-                >
-                  Carrier
-                </div>
-                <div
-                  className={`select-ships ${
-                    disableOption.indexOf('3') > -1 ? 'disable' : 'undefined'
-                  }`}
-                  data-num='3'
-                  onClick={handleSelect}
-                >
-                  Battleship
-                </div>
-                <div
-                  className={`select-ships ${
-                    disableOption.indexOf('2') > -1 ? 'disable' : 'undefined'
-                  }`}
-                  data-num='2'
-                  onClick={handleSelect}
-                >
-                  Cruiser
-                </div>
-                <div
-                  className={`select-ships ${
-                    disableOption.indexOf('1') > -1 ? 'disable' : 'undefined'
-                  }`}
-                  data-num='1'
-                  onClick={handleSelect}
-                >
-                  Submarine
-                </div>
-                <div
-                  className={`select-ships ${
-                    disableOption.indexOf('0') > -1 ? 'disable' : 'undefined'
-                  }`}
-                  data-num='0'
-                  onClick={handleSelect}
-                >
-                  Destroyer
-                </div>
+            <div className='select-ships-container'>
+              <h3>Ships</h3>
+              <div
+                className={`select-ships ${
+                  disableOption.indexOf('4') > -1 ? 'disable' : 'undefined'
+                }`}
+                data-num='4'
+                onClick={handleSelect}
+              >
+                Carrier
               </div>
-              <button onClick={handleDirection}>{direction}</button>
-              <p>Restart</p>{' '}
-            </React.Fragment>
+              <div
+                className={`select-ships ${
+                  disableOption.indexOf('3') > -1 ? 'disable' : 'undefined'
+                }`}
+                data-num='3'
+                onClick={handleSelect}
+              >
+                Battleship
+              </div>
+              <div
+                className={`select-ships ${
+                  disableOption.indexOf('2') > -1 ? 'disable' : 'undefined'
+                }`}
+                data-num='2'
+                onClick={handleSelect}
+              >
+                Cruiser
+              </div>
+              <div
+                className={`select-ships ${
+                  disableOption.indexOf('1') > -1 ? 'disable' : 'undefined'
+                }`}
+                data-num='1'
+                onClick={handleSelect}
+              >
+                Submarine
+              </div>
+              <div
+                className={`select-ships ${
+                  disableOption.indexOf('0') > -1 ? 'disable' : 'undefined'
+                }`}
+                data-num='0'
+                onClick={handleSelect}
+              >
+                Destroyer
+              </div>
+              <button className='direction-button' onClick={handleDirection}>
+                {direction}
+              </button>
+              <p className='restart-link' onClick={resetGame}>
+                Restart
+              </p>
+            </div>
           )}
         </div>
         <FriendlyGrid
@@ -685,6 +705,7 @@ const App = () => {
           resetSelect={resetSelect}
           playerHit={playerHit}
           passFriendShip={passFriendShip}
+          friendlyShips={friendlyShips}
           playerMiss={playerMiss}
         />
         <EnemyGrid
