@@ -636,14 +636,16 @@ const App = () => {
             </button>
           ) : win === true || lose === true ? (
             <div>
-              <h3>{win === true ? 'You win!' : 'Better luck next time!'}</h3>
+              <h3 className='win-lose-header'>
+                {win === true ? 'You win!' : 'Better luck next time!'}
+              </h3>
               <button className='play-again-button' onClick={resetGame}>
                 Play again?
               </button>
             </div>
           ) : (
             <div className='select-ships-container'>
-              <h3>Ships</h3>
+              <h3 className='select-ships-header'>Ships</h3>
               <div
                 className={`select-ships ${
                   disableOption.indexOf('4') > -1 ? 'disable' : 'undefined'

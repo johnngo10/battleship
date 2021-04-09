@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const FriendlyGrid = props => {
   const [cells, setCells] = useState([]);
+  const [hover, setHover] = useState([]);
   const {
     selected,
     direction,
@@ -354,6 +355,89 @@ const FriendlyGrid = props => {
     }
   };
 
+  // Make hover ship red for not allowed spaces
+  const toggleHover = e => {
+    const target = e.target.getAttribute('position');
+    const arr = [];
+    if (direction === 'Horizontal') {
+      if (selected === '0') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 1; i++) {
+          arr.push(arr[arr.length - 1] + 1);
+        }
+        setHover(arr);
+      } else if (selected === '1') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 2; i++) {
+          arr.push(arr[arr.length - 1] + 1);
+        }
+        setHover(arr);
+      } else if (selected === '2') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 2; i++) {
+          arr.push(arr[arr.length - 1] + 1);
+        }
+        setHover(arr);
+      } else if (selected === '3') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 3; i++) {
+          arr.push(arr[arr.length - 1] + 1);
+        }
+        setHover(arr);
+      } else if (selected === '4') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 4; i++) {
+          arr.push(arr[arr.length - 1] + 1);
+        }
+        setHover(arr);
+      }
+    } else if (direction === 'Vertical') {
+      if (selected === '0') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 1; i++) {
+          arr.push(arr[arr.length - 1] + 10);
+        }
+        setHover(arr);
+      } else if (selected === '1') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 2; i++) {
+          arr.push(arr[arr.length - 1] + 10);
+        }
+        setHover(arr);
+      } else if (selected === '2') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 2; i++) {
+          arr.push(arr[arr.length - 1] + 10);
+        }
+        setHover(arr);
+      } else if (selected === '3') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 3; i++) {
+          arr.push(arr[arr.length - 1] + 10);
+        }
+        setHover(arr);
+      } else if (selected === '4') {
+        arr.push(parseInt(target));
+        for (let i = 0; i < 4; i++) {
+          arr.push(arr[arr.length - 1] + 10);
+        }
+        setHover(arr);
+      }
+    }
+  };
+
+  const removeHover = () => {
+    setHover([]);
+  };
+
+  const handleHover = num => {
+    for (let i = 0; i < hover.length; i++) {
+      if (hover[i] === num) {
+        return 'ship-hover';
+      }
+    }
+  };
+
   return (
     <div className='friendly-grid-container'>
       <h2>You</h2>
@@ -363,10 +447,12 @@ const FriendlyGrid = props => {
             <div
               className={`friendly-cell ${setShip(value[0])} ${handleHit(
                 value[0]
-              )} ${handleMiss(value[0])}`}
+              )} ${handleMiss(value[0])} ${handleHover(value[0])}`}
               key={index}
               onClick={handlePlacedShip}
               position={value[0]}
+              onMouseEnter={toggleHover}
+              onMouseLeave={removeHover}
             ></div>
           );
         })}
